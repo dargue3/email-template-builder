@@ -4,9 +4,9 @@
     <div class="component-container" :class="customContainerClasses(el, index)" :data-index="index"
           :tag="containerID">
       <div class="icons">
-        <i class="fa fa-pencil" @click="edit(index)" aria-hidden="true" title="Edit Component"></i>
-        <i class="fa fa-clone" @click="clone(index)" aria-hidden="true" title="Clone Component"></i>
-        <i class="fa fa-times" @click="destroy(index)" aria-hidden="true" title="Delete Component"></i>
+        <i class="fa fa-pencil" @click="edit" aria-hidden="true" title="Edit Component"></i>
+        <i class="fa fa-clone" @click="clone" aria-hidden="true" title="Clone Component"></i>
+        <i class="fa fa-times" @click="destroy" aria-hidden="true" title="Delete Component"></i>
       </div>
 
       <!-- dynamic component, chooses type by computed property -->
@@ -53,7 +53,7 @@ export default  {
   data()
   {
     return {
-      highlightedContainers: []
+      
     }
   },
 
@@ -63,9 +63,8 @@ export default  {
 
     // whenever a component is edited, briefly highlight its container
     Bus.listen('component-added', (index) => { 
-      this.highlightContainer(index)
       this.makeContainersResizable()
-    })
+    });
   },
 
   computed:
@@ -101,49 +100,28 @@ export default  {
   {
     /**
      * Tell App to remove this component from the template
-     *
-     * @param {int} index   The index of the component in this.dropped
      */
-    destroy(index)
+    destroy()
     {
-      Bus.fire('destroy-component', {index: index, isSibling: this.isSibling});
+      Bus.fire('destroy-component', {index: this.index, isSibling: this.isSibling});
     },
 
 
     /**
      * Tell App to edit this component
-     *
-     * @param {int} index   The index of the component to edit in this.dropped
      */
-    edit(index)
+    edit()
     {
-      Bus.fire('edit-component', {index: index, isSibling: this.isSibling});
+      Bus.fire('edit-component', {index: this.index, isSibling: this.isSibling});
     },
 
 
     /**
      * Tell App to clone this component and place it right below
-     * 
-     * @param {int} index   The index of the component to clone in this.dropped
      */
-    clone(index)
+    clone()
     {
-      Bus.fire('clone-component', {index: index, isSibling: this.isSibling});
-    },
-
-
-    /**
-     * Flash this component's container after it's newly created
-     *
-     * @param {int} index  Which container is new in the this.dropped
-     */
-    highlightContainer(index)
-    {
-      // attach the class by setting flag for this.customContainerClasses
-      this.$set(this.highlightedContainers, index, true);
-
-      // remove the class after a second
-      setTimeout(() => { this.$set(this.highlightedContainers, index, false) }, 1000)
+      Bus.fire('clone-component', {index: this.index, isSibling: this.isSibling});
     },
 
 
@@ -165,7 +143,6 @@ export default  {
         'has-text-centered': el.justify === 'centered',
         'has-text-right': el.justify === 'right',
         'has-text-left': el.justify === 'left',
-        'highlighted': this.highlightedContainers[index],
         'resizable': ! el.frozen,
       }
     },
@@ -302,15 +279,16 @@ export default  {
     .icons
       opacity: 1
       transition: opacity 200ms ease
-  &.highlighted
-    border-color: $green
-    transition: all 200ms ease
   &.resizing
     border-color: $gray
     transition: border-color 200ms ease
     .icons
       opacity: 0
       transition: all 300ms ease
+
+.highlighted .component-container
+  border-color: $green
+  transition: border-color 200ms ease
 
 .icons
   position: absolute

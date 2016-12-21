@@ -8,7 +8,7 @@
       <!-- loop through all the added components -->
       <div v-for="(el, index) in dropped">
 
-        <div class="row" :class="{ 'show-container' : el.sibling }">
+        <div class="row" :class="{ 'show-container' : el.sibling, 'highlighted' : highlightedContainers[index] }">
 
           <dropped-component 
             :el="el"
@@ -69,16 +69,36 @@ export default  {
   data()
   {
     return {
+      highlightedContainers: []
     }
   },
 
   mounted()
   {
     this.initDropzones()
+
+    // whenever a container is edited, briefly highlight its borders
+    Bus.listen('component-added', (index) => this.highlightContainer(index));
+    Bus.listen('create-dropzone', (index) => this.highlightContainer(index))
   },
 
   methods:
   {
+    /**
+     * Flash this component's container after it's newly created
+     *
+     * @param {int} index  Which container is new in the this.dropped
+     */
+    highlightContainer(index)
+    {
+      // attach the class by setting flag for this.customContainerClasses
+      this.$set(this.highlightedContainers, index, true);
+
+      // remove the class after a second
+      setTimeout(() => { this.$set(this.highlightedContainers, index, false) }, 1000)
+    },
+
+
     /**
      * Create zones for the components to be dragged into
      */
@@ -148,7 +168,7 @@ export default  {
   border: 2px dashed transparent
   transition: all 200ms ease
   &:hover.show-container
-    border-color: $gray
+    border-color: lighten($gray, 15%)
     transition: all 200ms ease
 
 .default
@@ -183,6 +203,10 @@ export default  {
     margin: 10px
     z-index: 0
     min-height: 10px
+
+.highlighted .dropzone
+  border-color: $green
+  transition: border-color 200ms ease    
 
 
 .drop-active

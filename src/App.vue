@@ -99,6 +99,7 @@ export default {
       let isSibling = event.target.getAttribute('sibling');
 
       if (isSibling) {
+        this.dropped[index].hasDropzone = false;
         let temp = JSON.parse(JSON.stringify(this.dropped[index])) // make copy
         temp.sibling = this.components[type]
         this.$set(this.dropped, index, temp);
@@ -139,22 +140,33 @@ export default {
     clone(data)
     {
       if (data.isSibling) {
-        this.dropped.splice(data.index, 0, this.dropped[data.index].sibling);
+        let copy = JSON.parse(JSON.stringify(this.dropped[data.index].sibling))
+        this.dropped.splice(data.index + 1, 0, copy);
       }
       else {
-        this.dropped.splice(data.index, 0, this.dropped[data.index]);
+        let copy = JSON.parse(JSON.stringify(this.dropped[data.index]))
+        copy.sibling = undefined
+        this.dropped.splice(data.index + 1, 0, copy);
       }
 
       Bus.fire('component-added', data.index + 1);
     },
 
+
     createDropzoneNextToComponent(index)
     {
+      if (this.dropped[index].hasDropzone || this.dropped[index].sibling) {
+        // don't create dropzones if there's something already there
+        return
+      }
+
       let temp = JSON.parse(JSON.stringify(this.dropped[index])) // make non-reactive copy
       temp.hasDropzone = true;
 
       this.$set(this.dropped, index, temp);
+      Bus.fire('created-dropzone', index);
     },
+
 
     destroyDropzoneNextToComponent(index)
     {
@@ -162,24 +174,6 @@ export default {
       temp.hasDropzone = false;
 
       this.$set(this.dropped, index, temp);
-    },
-
-    createSibling(index)
-    {
-      // make sibling = non-reactive copy of original component
-      let temp = JSON.parse(JSON.stringify(this.dropped[index])); 
-      this.dropped[index].sibling = temp;
-
-      // make another non-reactive copy, this time entire array
-      temp = JSON.parse(JSON.stringify(this.dropped));
-
-      // reassign this.dropped with $set so that v-for in Preview detects change
-      this.dropped = temp
-
-      this.dropped[index].sibling.justify = 'centered';
-
-      // wait a little for the component to be rendered before flashing
-      setTimeout(() => { Bus.fire('component-added', index) }, 250)
     },
   },
 }
