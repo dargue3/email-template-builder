@@ -1,27 +1,42 @@
 <template>
   <div class="preview-wrapper">
     <template v-if="dropped.length">
+
       <!-- always a dropzone on top -->
       <div class="dropzone" data-index="0"></div>
 
       <!-- loop through all the added components -->
       <div v-for="(el, index) in dropped">
-        <div class="el-container" :class="customContainerClasses(el, index)">
-          <div class="icons">
-            <i class="fa fa-pencil" aria-hidden="true" title="Edit Component" @click="edit(index)"></i>
-            <i class="fa fa-clone" aria-hidden="true" title="Clone Component" @click="clone(index)"></i>
-            <i class="fa fa-times" aria-hidden="true" title="Delete Component" @click="destroy(index)"></i>
-          </div>
 
-          <dropped-component :el="el"></dropped-component>
+        <div class="row" :class="{ 'show-container' : el.sibling }">
+
+          <dropped-component 
+            :el="el"
+            :dropped="dropped"
+            :index="index">
+          </dropped-component>
+
+          <!-- component may have a sibling in the row with it, add that too -->
+          <dropped-component
+            v-if="el.sibling"
+            :el="el.sibling"
+            :dropped="dropped"
+            :index="index"
+            :is-sibling="true">
+          </dropped-component>
+
+          <div v-if="el.hasDropzone" class="fill dropzone" :data-index="index" :sibling="true"></div>
 
         </div>
-
+        
+        <!-- for each component, leave a dropzone underneath them -->
         <div class="dropzone" :data-index="index + 1"></div>
 
       </div>
     </template>
 
+
+    <!-- cute filler -->
     <div v-else class="dropzone has-text-centered default" data-index="0">
       <p class="quote">&ldquo;Simplicity is the ultimate sophistication&rdquo;</p>
       <p class="by">- Leonardo da Vinci</p>
@@ -54,100 +69,25 @@ export default  {
   data()
   {
     return {
-      highlightedContainers: []
     }
   },
 
   mounted()
   {
     this.initDropzones()
-
-    // whenever a component is edited, briefly highlight its container
-    Bus.listen('component-added', (index) => { this.highlightContainer(index) })
   },
 
   methods:
   {
     /**
-     * Remove a given component from the template
-     *
-     * @param {int} index   The index of the component in this.dropped
-     */
-    destroy(index)
-    {
-      Bus.fire('destroy-component', index);
-    },
-
-
-    /**
-     * Edit the data properties on this component
-     *
-     * @param {int} index   The index of the component to edit in this.dropped
-     */
-    edit(index)
-    {
-      Bus.fire('edit-component', index);
-    },
-
-
-    /**
-     * Clone this component and place it right below
-     * 
-     * @param {int} index   The index of the component to clone in this.dropped
-     */
-    clone(index)
-    {
-      Bus.fire('clone-component', index);
-    },
-
-
-    /**
-     * Flash this component's container after it's newly created
-     *
-     * @param {int} index  Which container is new in the this.dropped
-     */
-    highlightContainer(index)
-    {
-      // attach the class by setting flag for this.customContainerClasses
-      this.$set(this.highlightedContainers, index, true);
-
-      // remove the class after a second
-      setTimeout(() => { this.$set(this.highlightedContainers, index, false); }, 1000)
-    },
-
-
-    /**
-     * Add any user custom classes to the component's container
-     * Classes are assumed by the data stored in its data object
-     *
-     * @param {object} el   The container that is being styled
-     * @returns {object}    Classes to attach to the container
-     */
-    customContainerClasses(el, index)
-    {
-      return {
-        'height200': el.height === 200,
-        'padding30': el.margin === 'a lot of',
-        'padding15': el.margin === 'some',
-        'padding5': el.margin === 'a little',
-        'padding0': el.margin === 'no',
-        'has-text-centered': el.justify === 'centered',
-        'has-text-right': el.justify === 'right',
-        'has-text-left': el.justify === 'left',
-        'highlighted': this.highlightedContainers[index],
-      }
-    },
-
-
-
-    /**
-     * Create a zone for the elements to be dragged into
+     * Create zones for the components to be dragged into
      */
     initDropzones()
     {
       let self = this;
       InteractJS.interact('.dropzone').dropzone({
 
+        // need a 10% overlap to count as 'droppable'
         overlap: 0.1,
 
         // only accept draggable elements
@@ -189,7 +129,7 @@ export default  {
           event.target.classList.remove('drop-target');
         }
       });
-    }
+    },
   },
 };
 
@@ -203,18 +143,23 @@ export default  {
   width: 100%
   padding: 1em
 
-.el-container
-  position: relative
+.row
+  display: flex
   border: 2px dashed transparent
-  transition: border-color 200ms ease
-  &:hover
+  transition: all 200ms ease
+  &:hover.show-container
     border-color: $gray
-    transition: border-color 200ms ease
-    .icons
-      opacity: 1
-      transition: opacity 200ms ease
-  &.highlighted
-    border-color: $green
+    transition: all 200ms ease
+
+.default
+  .quote
+    opacity: 1
+    color: $info
+    transition: all 200ms ease
+  .by
+    opacity: 1
+    color: $gray
+    margin-top: 10px
     transition: all 200ms ease
 
 .dropzone
@@ -232,14 +177,12 @@ export default  {
     border-width: 2px
     &.drop-target
       .quote, .by
-        visibility: hidden
-
-.quote
-  color: $info
-.by
-  color: $gray
-  margin-left: 50px
-
+        opacity: 0
+  &.fill
+    height: auto
+    margin: 10px
+    z-index: 0
+    min-height: 10px
 
 
 .drop-active
@@ -252,52 +195,6 @@ export default  {
   border-color: transparent
   z-index: 1
   transition: background 200ms ease, border-color 200ms ease
-
-.icons
-  position: absolute
-  display: flex
-  flex-flow: row
-  align-items: center
-  justify-content: center
-  top: 1px
-  right: 0px
-  color: $blue
-  opacity: 0
-  transition: opacity 200ms ease
-  .fa
-    flex: 1
-    font-size: 17px
-    margin: 0 5px
-    &:hover
-      cursor: pointer
-      color: $bright-blue
-
-
-
-
-// component container classes, set dynamically depending on el's data object
-
-.height200
-  min-height: 200px
-.height150
-  min-height: 150px
-.height100
-  min-height: 100px
-.height75
-  min-height: 75px
-.height50
-  min-height: 50px
-.height25
-  min-height: 25px
-
-.padding30
-  padding: 30px
-.padding15
-  padding: 15px
-.padding5
-  padding: 5px
-.padding0
-  padding: 0
 
 
 </style>

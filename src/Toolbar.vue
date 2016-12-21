@@ -17,7 +17,7 @@ import InteractJS from 'interactjs'
 
 export default {
   
-  name: 'Selector',
+  name: 'Toolbar',
 
   props:
   {
@@ -90,6 +90,8 @@ export default {
         target.setAttribute('data-x', x);
         target.setAttribute('data-y', y);
       }
+
+      window.dragMoveListener = dragMoveListener;
     },
   },
 };

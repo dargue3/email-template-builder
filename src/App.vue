@@ -61,7 +61,7 @@ export default {
         },
         divider: {
           type: 'divider',
-          margin: 'some'
+          margin: 'no'
         },
         space: {
           type: 'space',
@@ -80,6 +80,8 @@ export default {
     Bus.listen('destroy-component', (index) => { this.destroy(index) });
     Bus.listen('edit-component', (index) => { this.edit(index) });
     Bus.listen('clone-component', (index) => { this.clone(index) });
+    Bus.listen('create-dropzone', (index) => { this.createDropzoneNextToComponent(index) });
+    Bus.listen('destroy-dropzone', (index) => { this.destroyDropzoneNextToComponent(index) });
   },
 
 
@@ -94,27 +96,90 @@ export default {
     {
       let index = parseInt(event.target.getAttribute('data-index')); // which index it was dropped in 
       let type = event.relatedTarget.getAttribute('data-type'); // what type of component was dropped
+      let isSibling = event.target.getAttribute('sibling');
 
-      this.dropped.splice(index, 0, this.components[type]);
+      if (isSibling) {
+        let temp = JSON.parse(JSON.stringify(this.dropped[index])) // make copy
+        temp.sibling = this.components[type]
+        this.$set(this.dropped, index, temp);
+      }
+      else {
+        this.dropped.splice(index, 0, this.components[type]);
+      }
+
       Bus.fire('component-added', index);
       
       // shift tool-bar to edit mode
     },
 
-    destroy(index)
+    destroy(data)
     {
-      this.dropped.splice(index, 1);
+      if (data.isSibling) {
+        // remove the sibling from the row
+        let temp = JSON.parse(JSON.stringify(this.dropped[data.index])) // make copy
+        temp.sibling = undefined;
+        this.$set(this.dropped, data.index, temp);
+      }
+      else if (this.dropped[data.index].sibling) {
+        // set sibling as only component in row
+        let temp = JSON.parse(JSON.stringify(this.dropped[data.index].sibling)) // make copy
+        this.$set(this.dropped, data.index, temp);
+      }
+      else {
+        this.dropped.splice(data.index, 1);
+      }
     },
 
-    edit(index)
+    edit(data)
     {
+
       // shift tool-bar to edit mode
     },
 
-    clone(index)
+    clone(data)
     {
-      this.dropped.splice(index, 0, this.dropped[index]);
-      Bus.fire('component-added', index + 1);
+      if (data.isSibling) {
+        this.dropped.splice(data.index, 0, this.dropped[data.index].sibling);
+      }
+      else {
+        this.dropped.splice(data.index, 0, this.dropped[data.index]);
+      }
+
+      Bus.fire('component-added', data.index + 1);
+    },
+
+    createDropzoneNextToComponent(index)
+    {
+      let temp = JSON.parse(JSON.stringify(this.dropped[index])) // make non-reactive copy
+      temp.hasDropzone = true;
+
+      this.$set(this.dropped, index, temp);
+    },
+
+    destroyDropzoneNextToComponent(index)
+    {
+      let temp = JSON.parse(JSON.stringify(this.dropped[index])) // make non-reactive copy
+      temp.hasDropzone = false;
+
+      this.$set(this.dropped, index, temp);
+    },
+
+    createSibling(index)
+    {
+      // make sibling = non-reactive copy of original component
+      let temp = JSON.parse(JSON.stringify(this.dropped[index])); 
+      this.dropped[index].sibling = temp;
+
+      // make another non-reactive copy, this time entire array
+      temp = JSON.parse(JSON.stringify(this.dropped));
+
+      // reassign this.dropped with $set so that v-for in Preview detects change
+      this.dropped = temp
+
+      this.dropped[index].sibling.justify = 'centered';
+
+      // wait a little for the component to be rendered before flashing
+      setTimeout(() => { Bus.fire('component-added', index) }, 250)
     },
   },
 }

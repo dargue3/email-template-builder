@@ -54,7 +54,7 @@ export default  {
 <style lang="sass">
 @import '../assets/sass/library'
 
-.el-container
+.component-container
   .space
     display: flex
     justify-content: center
