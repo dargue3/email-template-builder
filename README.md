@@ -48,6 +48,9 @@ Hover over a block and press the X icon. It’s quick, I promise the block doesn
 ### Saving
 By default, the template is being saved to local browser storage whenever a change is made. To disable this feature, uncheck the setting “Automatically save template” at the bottom of the toolbar.
 
+## Room for Improvement
+There's a few things that I knowingly skipped, mostly because I could probably spend the next month adding neat features. Firstly, you can't drag and drop existing blocks to reorder them. I'm sure this would be simple enough to implement given how the code works, but I just didn't get around to it. Secondly, being able to double-click a block and have it add to the bottom of the template would be handy. I'm sure there's other stuff, but those are the ones I have in my notes.
+
 
 
 
