@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "show-off": "npm install; npm run dev"
   },
   "dependencies": {
     "bulma": "^0.2.3",
