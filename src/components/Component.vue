@@ -23,12 +23,12 @@
 
 import InteractJS from 'interactjs'
 import Bus from '../assets/js/EventBus'
-import TextComponent from './Text'
-import ImageComponent from './Image'
-import DividerComponent from './Divider'
-import ButtonComponent from './Button'
-import SpaceComponent from './Space'
-import LinksComponent from './Links'
+import Text from './Text'
+import Image from './Image'
+import Divider from './Divider'
+import Button from './Button'
+import Space from './Space'
+import Links from './Links'
 
 export default  {
   
@@ -44,12 +44,12 @@ export default  {
 
   components:
   {
-    'k-text' : TextComponent,
-    'k-divider' : DividerComponent,
-    'k-image' : ImageComponent,
-    'k-button' : ButtonComponent,
-    'k-space' : SpaceComponent,
-    'k-links' : LinksComponent,
+    'k-text' : Text,
+    'k-divider' : Divider,
+    'k-image' : Image,
+    'k-button' : Button,
+    'k-space' : Space,
+    'k-links' : Links,
   },
 
   data()

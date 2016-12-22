@@ -58,6 +58,12 @@ export default  {
     }
   },
 
+  watch:
+  {
+    // watch all the indices of el for changes, save when they happen
+    'el' : { handler : function() { Bus.fire('save'); }, deep: true },
+  },
+
   computed:
   {
     attributes()

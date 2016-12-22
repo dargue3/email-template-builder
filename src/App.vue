@@ -2,11 +2,14 @@
   <div class="app-wrapper">
 
     <div class="columns">
+
       <div class="column is-5">
         <div class="heading has-text-centered">
           <p class="title">Toolbar</p>
         </div>
+
         <tool-bar :draggable="components" :dropped="dropped"></tool-bar>
+
         <p class="control">
           <label class="checkbox">
             <input type="checkbox" v-model="autoEdit">
@@ -20,11 +23,14 @@
           </label>
         </p>
       </div>
+
       <div class="column is-7">
         <div class="heading has-text-centered">
           <p class="title">Preview</p>
         </div>
+
         <preview :dropped="dropped"></preview>
+        
       </div>
     </div>
 
@@ -115,6 +121,7 @@ export default {
   {
     this.load();
 
+    Bus.listen('save', () => { this.save() });
     Bus.listen('component-dropped', (event) => { this.addComponent(event); this.save() });
     Bus.listen('destroy-component', (index) => { this.destroy(index); this.save() });
     Bus.listen('edit-component', (index) => { this.edit(index); this.save() });
@@ -283,6 +290,7 @@ export default {
   margin: 0 auto
   max-width: 1000px
   margin-top: 100px
+  height: 900px
 
 .heading
   margin-bottom: 20px
