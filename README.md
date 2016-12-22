@@ -1,5 +1,5 @@
 # Reactive Email Template Builder
-This is a nice little proof-of-concept email template builder. It is made up of two frameworks: the amazing [Vue.js](vuejs.org) `v2.1` and the Sass CSS library [Bulma](bulma.io).
+This is a nice little proof-of-concept email template builder. It is made up of two frameworks: the amazing [Vue.js](http://vuejs.org) `v2.1` and the Sass CSS library [Bulma](http://bulma.io).
 
 ![Demo](http://i.imgur.com/QFn0gnQ.png?raw=true)
 
