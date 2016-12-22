@@ -10,7 +10,7 @@
       </div>
 
       <!-- dynamic component, chooses type by computed property -->
-      <component :is="componentType" :el="el"></component>
+      <component :is="componentKey" :el="el"></component>
 
     </div>
     
@@ -28,6 +28,7 @@ import ImageComponent from './Image'
 import DividerComponent from './Divider'
 import ButtonComponent from './Button'
 import SpaceComponent from './Space'
+import LinksComponent from './Links'
 
 export default  {
   
@@ -48,6 +49,7 @@ export default  {
     'k-image' : ImageComponent,
     'k-button' : ButtonComponent,
     'k-space' : SpaceComponent,
+    'k-links' : LinksComponent,
   },
 
   data()
@@ -76,9 +78,9 @@ export default  {
      *
      * @returns {string}
      */
-    componentType()
+    componentKey()
     {
-      return `k-${this.el.type}`
+      return `k-${this.el.key}`
     },
 
 
@@ -135,11 +137,14 @@ export default  {
     customContainerClasses(el, index)
     {
       return {
-        'height200': el.height === 200,
-        'padding30': el.margin === 'a lot of',
-        'padding15': el.margin === 'some',
-        'padding5': el.margin === 'a little',
-        'padding0': el.margin === 'no',
+        'paddingT30': el.marginTop === 'a lot',
+        'paddingT15': el.marginTop === 'some',
+        'paddingT5': el.marginTop === 'a little',
+        'paddingT0': el.marginTop === 'none',
+        'paddingB30': el.marginBottom === 'a lot',
+        'paddingB15': el.marginBottom === 'some',
+        'paddingB5': el.marginBottom === 'a little',
+        'paddingB0': el.marginBottom === 'none',
         'has-text-centered': el.justify === 'centered',
         'has-text-right': el.justify === 'right',
         'has-text-left': el.justify === 'left',
@@ -290,6 +295,10 @@ export default  {
   border-color: $green
   transition: border-color 200ms ease
 
+.being-edited .component-container
+  border-color: $red
+  transition: border-color 200ms ease
+
 .icons
   position: absolute
   display: flex
@@ -299,6 +308,7 @@ export default  {
   top: 1px
   right: 5px
   color: $blue
+  padding: 4px
   z-index: 9999
   background: white
   opacity: 0
@@ -329,14 +339,23 @@ export default  {
 .height25
   min-height: 25px
 
-.padding30
-  padding: 30px
-.padding15
-  padding: 15px
-.padding5
-  padding: 5px
-.padding0
-  padding: 0
+.paddingT30
+  padding-top: 30px
+.paddingT15
+  padding-top: 15px
+.paddingT5
+  padding-top: 5px
+.paddingT0
+  padding-top: 0
+
+.paddingB30
+  padding-bottom: 30px
+.paddingB15
+  padding-bottom: 15px
+.paddingB5
+  padding-bottom: 5px
+.paddingB0
+  padding-bottom: 0
 
 
 </style>

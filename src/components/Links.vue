@@ -1,11 +1,17 @@
 <template>
   <div>
   
-    <img :src="el.src" :class="customStyling" />
-    <div class="caption">
-      <span>{{ el.caption }}</span>
-    </div>
-    
+    <nav class="nav">
+      <div class="nav-left"></div>
+      <div class="nav-center">
+        <div v-for="link in el.links" class="nav-item">
+          <span class="icon">
+            <i class="fa" :class="link" href="#"></i>
+          </span>
+        </div>
+      </div>
+      <div class="nav-right"></div>
+    </nav>
 
   </div>
 </template>
@@ -14,7 +20,7 @@
 
 export default  {
   
-  name: 'ImageComponent',
+  name: 'LinksComponent',
 
   props:
   {
@@ -38,6 +44,7 @@ export default  {
     customStyling()
     {
       return {
+        
       }
     },
   },
@@ -50,12 +57,8 @@ export default  {
 
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
 @import '../assets/sass/library'
-
-.caption
-  color: gray
-  font-size: 12px
-  margin-top: -4px
+  
 
 </style>

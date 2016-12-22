@@ -3,8 +3,16 @@ $bright-blue: #38A9F9
 $green: #21C230
 $gray: darken(white, 25%)
 
+hr
+  margin: 10px 0
+
 .dashed-border
   border: 2px dashed $gray
 
 .solid-border
   border: 2px solid $gray
+
+.fade-enter-active, .fade-leave-active
+  transition: opacity 250ms
+.fade-enter, .fade-leave-active
+  opacity: 0

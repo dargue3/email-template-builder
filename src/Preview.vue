@@ -8,12 +8,13 @@
       <!-- loop through all the added components -->
       <div v-for="(el, index) in dropped">
 
-        <div class="row" :class="{ 'show-container' : el.sibling, 'highlighted' : highlightedContainers[index] }">
+        <div class="row">
 
           <dropped-component 
             :el="el"
             :dropped="dropped"
-            :index="index">
+            :index="index"
+            :class="containerClasses(el, index, false)">
           </dropped-component>
 
           <!-- component may have a sibling in the row with it, add that too -->
@@ -22,10 +23,12 @@
             :el="el.sibling"
             :dropped="dropped"
             :index="index"
-            :is-sibling="true">
+            :is-sibling="true"
+            :class="containerClasses(el, index, true)">
           </dropped-component>
 
-          <div v-if="el.hasDropzone" class="fill dropzone" :data-index="index" :sibling="true"></div>
+          <div v-if="el.hasDropzone" class="fill dropzone" :class="containerClasses(el, index, false, true)"
+              :data-index="index" :sibling="true"></div>
 
         </div>
         
@@ -69,7 +72,8 @@ export default  {
   data()
   {
     return {
-      highlightedContainers: []
+      highlightedContainers: [],
+      beingEdited: { index: null, isSibling: false },
     }
   },
 
@@ -78,8 +82,13 @@ export default  {
     this.initDropzones()
 
     // whenever a container is edited, briefly highlight its borders
-    Bus.listen('component-added', (index) => this.highlightContainer(index));
-    Bus.listen('create-dropzone', (index) => this.highlightContainer(index))
+    Bus.listen('highlight-container', (index) => this.highlightContainer(index))
+    
+    // when component is being edited, highlight the container in red
+    Bus.listen('editing-component', (data) => {
+      this.beingEdited = { index: data.index, isSibling: data.isSibling}
+    })
+    Bus.listen('done-editing', (data) => this.beingEdited.index = null)
   },
 
   methods:
@@ -96,6 +105,24 @@ export default  {
 
       // remove the class after a second
       setTimeout(() => { this.$set(this.highlightedContainers, index, false) }, 1000)
+    },
+
+    /**
+     * Decide if the component's container has any special classes
+     *
+     * @param {object} el   The component
+     * @param {int} index   The index of the row
+     * @param {bool} sibling Is this component the sibling in a container?
+     * @param {bool} dropzone  Are these classes going onto a dropzone element?
+     * @returns {object}    Classes to be attached
+     */
+    containerClasses(el, index, sibling, dropzone)
+    {
+      return {
+        'show-container': el.sibling,
+        'highlighted': this.highlightedContainers[index],
+        'being-edited': this.beingEdited.index === index && this.beingEdited.isSibling === sibling && ! dropzone,
+      }
     },
 
 
@@ -203,10 +230,9 @@ export default  {
     margin: 10px
     z-index: 0
     min-height: 10px
-
-.highlighted .dropzone
-  border-color: $green
-  transition: border-color 200ms ease    
+  &.highlighted
+    border-color: $green
+    transition: border-color 200ms ease    
 
 
 .drop-active
