@@ -3,7 +3,7 @@
   <nav class="level">
     <div class="level-left">
       <div class="level-item">
-        <p class="subtitle is-5">
+        <p class="subtitle is-6">
           Justification
         </p>
       </div>

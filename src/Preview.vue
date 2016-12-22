@@ -8,7 +8,7 @@
       <!-- loop through all the added components -->
       <div v-for="(el, index) in dropped">
 
-        <div class="row">
+        <div class="row" :class="{ 'show-container' : el.sibling }">
 
           <dropped-component 
             :el="el"
@@ -227,7 +227,7 @@ export default  {
         opacity: 0
   &.fill
     height: auto
-    margin: 10px
+    margin: 0 10px
     z-index: 0
     min-height: 10px
   &.highlighted

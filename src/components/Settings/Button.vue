@@ -2,7 +2,7 @@
   <nav class="level">
     <div class="level-left">
       <div class="level-item">
-        <p class="subtitle is-5">
+        <p class="subtitle is-6">
           Label
         </p>
       </div>
@@ -12,7 +12,7 @@
         </p>
       </div>
       <div class="level-item">
-        <p class="subtitle is-5">
+        <p class="subtitle is-6">
           Color
         </p>
       </div>

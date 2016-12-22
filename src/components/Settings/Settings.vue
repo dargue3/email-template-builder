@@ -87,7 +87,7 @@ export default  {
         allPossible.splice(allPossible.indexOf('k-links'), 1);
       }
 
-      if (this.el.key === 'links') {
+      if (this.el.key === 'links' || this.el.key === 'space' || this.el.key === 'divider') {
         allPossible.splice(allPossible.indexOf('justification'), 1);
       }
 

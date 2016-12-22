@@ -60,8 +60,9 @@ export default {
   {
     Bus.listen('editing-component', (data) => this.startEditing(data))
     Bus.listen('done-editing', () => this.editing = null);
+
     Bus.listen('destroy-component', (data) => {
-      if (data.index === this.editing.index && data.isSibling === this.editing.isSibling) {
+      if (this.editing) {
         Bus.fire('done-editing', { index: this.editing.index })
       }
     });
@@ -71,7 +72,6 @@ export default {
   {
     startEditing(data)
     {
-      console.log(data);
       if (this.editing && this.editing.index === data.index &&
           this.editing.isSibling === data.isSibling) {
         // already editing this component

@@ -72,7 +72,8 @@ export default {
           marginTop: 'a little',
           marginBottom: 'a little',
           caption: '',
-          src: 'http://placehold.it/550x200',
+          height: '300',
+          src: 'http://placehold.it/550x300',
         },
         button: { 
           key: 'button',
@@ -112,17 +113,65 @@ export default {
    */
   mounted()
   {
-    Bus.listen('component-dropped', (event) => { this.addComponent(event) });
-    Bus.listen('destroy-component', (index) => { this.destroy(index) });
-    Bus.listen('edit-component', (index) => { this.edit(index) });
-    Bus.listen('clone-component', (index) => { this.clone(index) });
-    Bus.listen('create-dropzone', (index) => { this.createDropzoneNextToComponent(index) });
-    Bus.listen('destroy-dropzone', (index) => { this.destroyDropzoneNextToComponent(index) });
+    this.load();
+
+    Bus.listen('component-dropped', (event) => { this.addComponent(event); this.save() });
+    Bus.listen('destroy-component', (index) => { this.destroy(index); this.save() });
+    Bus.listen('edit-component', (index) => { this.edit(index); this.save() });
+    Bus.listen('clone-component', (index) => { this.clone(index); this.save() });
+    Bus.listen('create-dropzone', (index) => { this.createDropzoneNextToComponent(index); this.save() });
+    Bus.listen('destroy-dropzone', (index) => { this.destroyDropzoneNextToComponent(index); this.save() });
+  },
+
+  watch:
+  {
+    autoSave(val)
+    {
+      if (val) {
+        this.save();
+      }
+      else {
+        localStorage.setItem('autoSave', JSON.stringify(false));
+        this.deleteStorage();
+      }
+    },
+
+    autoEdit()
+    {
+      this.save();
+    },
   },
 
 
   methods:
   {
+    /**
+     * Check for local browser storage
+     */
+    load()
+    {
+      this.dropped = localStorage.getItem('dropped') ? JSON.parse(localStorage.getItem('dropped')) : [];
+      this.autoSave = localStorage.getItem('autoSave') ? JSON.parse(localStorage.getItem('autoSave')) : true;
+      this.autoEdit = localStorage.getItem('autoEdit') ? JSON.parse(localStorage.getItem('autoEdit')) : false;
+    },
+
+
+    save()
+    {
+      if (this.autoSave) {
+        localStorage.setItem('dropped', JSON.stringify(this.dropped));
+        localStorage.setItem('autoSave', JSON.stringify(this.autoSave));
+        localStorage.setItem('autoEdit', JSON.stringify(this.autoEdit));
+      }
+    },
+
+
+    deleteStorage()
+    {
+      localStorage.removeItem('dropped');
+      localStorage.removeItem('autoEdit');
+    },
+
     /**
      * Add a component to the template depending on the info from the InteractJS event
      *

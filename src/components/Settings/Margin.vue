@@ -3,13 +3,13 @@
   <nav class="level">
     <div class="level-left">
       <div class="level-item">
-        <p class="subtitle is-5">
+        <p class="subtitle is-6">
           Margin top
         </p>
       </div>
       <div class="level-item">
         <p class="control">
-          <span class="select is-small">
+          <span class="select">
             <select v-model="el.marginTop">
             <option value="a lot">a lot</option>
             <option value="some">some</option>
@@ -21,13 +21,13 @@
         </p>
       </div>
       <div class="level-item">
-        <p class="subtitle is-5">
+        <p class="subtitle is-6">
           bottom
         </p>
       </div>
       <div class="level-item">
         <p class="control">
-          <span class="select is-small">
+          <span class="select">
             <select v-model="el.marginBottom">
             <option value="a lot">a lot</option>
             <option value="some">some</option>

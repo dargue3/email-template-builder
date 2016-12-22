@@ -66,7 +66,10 @@ export default  {
   &:hover .hint
     opacity: 1
     transition: all 300ms ease
-  
+
+.being-edited .space .hint
+  opacity: 1
+  transition: all 300ms ease
   
 
 </style>

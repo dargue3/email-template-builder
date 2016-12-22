@@ -4,7 +4,7 @@
     <div v-for="row in rowsOfComponents" class="columns has-text-centered">
       <div v-for="el in row" class="column draggable" :data-key="el.key">
         <div class="element">
-          {{ el.key }}  
+          {{ el.name }}  
         </div>
       </div>
     </div>

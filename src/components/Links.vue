@@ -57,8 +57,16 @@ export default  {
 
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 @import '../assets/sass/library'
+
+.nav
+  max-height: 25px
+  min-height: 25px
+.nav-item
+  padding: 0px 10px
+  height: 25px
+  align-items: flex-end
   
 
 </style>

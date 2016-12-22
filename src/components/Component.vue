@@ -326,19 +326,6 @@ export default  {
 
 // component container classes, set dynamically depending on el's data object
 
-.height200
-  min-height: 200px
-.height150
-  min-height: 150px
-.height100
-  min-height: 100px
-.height75
-  min-height: 75px
-.height50
-  min-height: 50px
-.height25
-  min-height: 25px
-
 .paddingT30
   padding-top: 30px
 .paddingT15
