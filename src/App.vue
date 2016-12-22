@@ -4,19 +4,19 @@
     <div class="columns">
 
       <div class="column is-5">
-        <div class="heading has-text-centered">
+        <div class="app-heading heading has-text-centered">
           <p class="title">Toolbar</p>
         </div>
 
         <tool-bar :draggable="components" :dropped="dropped"></tool-bar>
 
-        <p class="control">
+        <p class="app-control">
           <label class="checkbox">
             <input type="checkbox" v-model="autoEdit">
             Show edit page after adding component
           </label>
         </p>
-        <p class="control">
+        <p class="app-control">
           <label class="checkbox">
             <input type="checkbox" v-model="autoSave">
             Automatically save template
@@ -25,7 +25,7 @@
       </div>
 
       <div class="column is-7">
-        <div class="heading has-text-centered">
+        <div class="app-heading heading has-text-centered">
           <p class="title">Preview</p>
         </div>
 
@@ -283,7 +283,8 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
+@import '../node_modules/bulma/bulma'
 @import './assets/sass/library'
 
 .app-wrapper
@@ -292,12 +293,12 @@ export default {
   margin-top: 100px
   height: 900px
 
-.heading
+.app-heading
   margin-bottom: 20px
   .title
     color: $blue
 
-.control
+.app-control
   padding-left: 35px
   padding-bottom: 10px
   background: white

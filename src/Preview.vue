@@ -200,11 +200,11 @@ export default  {
 
 .default
   .quote
-    opacity: 1
+    opacity: 0.7
     color: $info
     transition: all 200ms ease
   .by
-    opacity: 1
+    opacity: 0.7
     color: $gray
     margin-top: 10px
     transition: all 200ms ease
