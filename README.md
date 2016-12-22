@@ -1,7 +1,7 @@
 # Reactive Email Template Builder
 This is a nice little proof-of-concept email template builder. It is made up of two frameworks: the amazing [Vue.js](vuejs.org) `v2.1` and the Sass CSS library [Bulma](bulma.io).
 
-[Demo](http://imgur.com/QFn0gnQ)
+![Demo](http://imgur.com/QFn0gnQ)
 
 
 ## Installation
@@ -19,20 +19,23 @@ The main concept behind this template builder are drag-n-droppable elements that
 
 ### Placing Blocks
 Blocks  can be dragged and dropped into their desired position. Valid “dropzones” are highlighted with a blue border when a block has been picked up.  When a block can be dropped, it will turn green.
-[Placing Blocks](http://imgur.com/avzn5Xf)
+
+![Placing Blocks](http://imgur.com/avzn5Xf)
 
 
 ### Resizing Blocks
 Blocks can be resized in order to make room for a sibling block. Just grab the right side of the block and drag to shrink it. Once you’ve created enough room, you’ll see a new “dropzone” highlighted in green.
-[Resizing Blocks](http://imgur.com/ycLCWd9)
+
+![Resizing Blocks](http://imgur.com/ycLCWd9)
 
 
 ### Block Options
-When hovering over a block you have added to the template, three icons appear in the top-right: Edit, Clone, Delete, respectively. It’s pretty explanatory what they do… but I’ll tell you about it anyways.
+When hovering over a block you have added to the template, three icons appear in the top-right: Edit, Clone, and Delete, respectively. It’s pretty self-explanatory what they do… but I’ll tell you about it anyways.
 
 #### Edit
-Hover over a block and press the pencil icon, this switches the toolbar to ‘Edit Block’ mode; you should see the block highlighted in some sort of color that is close to red. Depending on what type of block you are editing, various options will be shown to you. The blocks are reactive so the changes are reflected immediately.
-[Edit Block](http://imgur.com/FCQuERe)
+Hover over a block and press the pencil icon, this switches the toolbar to ‘Edit Block’ mode; you should see the block highlighted in a color that is debatably either pink or red. Depending on what type of block you are editing, various options will be shown to you. The blocks are reactive so the changes are reflected immediately.
+
+![Edit Block](http://imgur.com/FCQuERe)
 
 
 #### Clone
