@@ -40,14 +40,14 @@
 <script>
 
 import Bus from './assets/js/EventBus'
-import ToolBar from './ToolBar.vue'
+import Toolbar from './Toolbar.vue'
 import Preview from './Preview.vue'
 
 export default {
   name: 'App',
 
   components: {
-    ToolBar,
+    Toolbar,
     Preview
   },
 
