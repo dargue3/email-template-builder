@@ -41,8 +41,8 @@
 
     <!-- cute filler -->
     <div v-else class="dropzone has-text-centered default" data-index="0">
-      <p class="quote">&ldquo;Simplicity is the ultimate sophistication&rdquo;</p>
-      <p class="by">- Leonardo da Vinci</p>
+      <p class="quote">Just drag and drop elements over to here!</p>
+      <p class="quote">Then hover over them to edit, clone, or delete</p>
     </div>
     
 
@@ -202,11 +202,7 @@ export default  {
   .quote
     opacity: 0.7
     color: $info
-    transition: all 200ms ease
-  .by
-    opacity: 0.7
-    color: $gray
-    margin-top: 10px
+    margin-bottom: 10px
     transition: all 200ms ease
 
 .dropzone

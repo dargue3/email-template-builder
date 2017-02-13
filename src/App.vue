@@ -8,7 +8,7 @@
           <p class="title">Toolbar</p>
         </div>
 
-        <tool-bar :draggable="components" :dropped="dropped"></tool-bar>
+        <toolbar :draggable="components" :dropped="dropped"></toolbar>
 
         <p class="app-control">
           <label class="checkbox">
